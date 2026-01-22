@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Study Prompt Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .status-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .hint {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-section {
+            margin-top: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e5e7eb;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .progress-log {
+            background: #1f2937;
+            color: #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        .progress-log div {
+            margin-bottom: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            margin-top: 10px;
+        }
+
+        .download-btn {
+            background: #10b981;
+            display: none;
+            margin-top: 20px;
+        }
+
+        .download-btn.active {
+            display: block;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Medical Study Prompt Generator</h1>
+            <p>Transform NBME/USMLE exams into enriched study materials</p>
+        </div>
+
+        <!-- API Key Status -->
+        <div class="card">
+            <h2>
+                <span class="emoji">🔑</span> API Configuration
+                {% if api_key_configured %}
+                <span class="status-badge status-success">✓ Configured</span>
+                {% else %}
+                <span class="status-badge status-warning">⚠ Required</span>
+                {% endif %}
+            </h2>
+            
+            {% if not api_key_configured %}
+            <p style="color: #dc2626; margin-bottom: 15px;">
+                ⚠️ OpenAI API key not configured. Please enter your key to continue.
+            </p>
+            {% endif %}
+            
+            <button onclick="showApiKeyModal()" class="btn-secondary" style="width: auto; padding: 10px 20px;">
+                {% if api_key_configured %}Change{% else %}Enter{% endif %} API Key
+            </button>
+        </div>
+
+        <!-- Main Form -->
+        <div class="card">
+            <h2><span class="emoji">📝</span> Generation Settings</h2>
+            
+            <form id="generationForm">
+                <div class="form-group">
+                    <label for="input_nature">What is the nature of your input?</label>
+                    <textarea id="input_nature" name="input_nature">An NBME exam of 50 questions with some explanations that needs to be enriched by firstaid and made into prompts</textarea>
+                    <div class="hint">Describe your exam format and what you'd like in the output</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="num_questions">How many questions do you want to generate?</label>
+                    <input type="text" id="num_questions" name="num_questions" value="50">
+                    <div class="hint">Enter a number or 'auto' to detect automatically</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="input_pdf">Input Exam PDF</label>
+                    <select id="input_pdf" name="input_pdf">
+                        {% if input_pdf %}
+                        <option value="{{ input_pdf }}" selected>{{ input_pdf }}</option>
+                        {% endif %}
+                        {% for pdf in input_pdfs %}
+                        {% if pdf != input_pdf %}
+                        <option value="{{ pdf }}">{{ pdf }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <div class="hint">Select your NBME/USMLE exam PDF</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstaid_pdf">First Aid PDF</label>
+                    <select id="firstaid_pdf" name="firstaid_pdf">
+                        {% if firstaid_pdf %}
+                        <option value="{{ firstaid_pdf }}" selected>{{ firstaid_pdf }}</option>
+                        {% else %}
+                        <option value="">No First Aid PDF found</option>
+                        {% endif %}
+                    </select>
+                    <div class="hint">Your First Aid textbook PDF for enrichment</div>
+                </div>
+
+                <button type="submit" id="generateBtn">
+                    <span class="emoji">🚀</span> Generate Study Prompts
+                </button>
+            </form>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="card progress-section" id="progressSection" style="display: none;">
+            <h2><span class="emoji">📊</span> Progress</h2>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%;">
+                    <span id="progressText">0%</span>
+                </div>
+            </div>
+
+            <div class="progress-log" id="progressLog">
+                <div>Waiting to start...</div>
+            </div>
+
+            <button class="download-btn" id="downloadBtn" onclick="downloadCSV()">
+                <span class="emoji">💾</span> Download Study Prompts CSV
+            </button>
+        </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div class="modal" id="apiKeyModal">
+        <div class="modal-content">
+            <h2>🔑 Enter OpenAI API Key</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                Get your API key from: 
+                <a href="https://platform.openai.com/api-keys" target="_blank" style="color: #667eea;">
+                    platform.openai.com/api-keys
+                </a>
+            </p>
+            
+            <div class="form-group">
+                <label for="api_key_input">API Key</label>
+                <input type="password" id="api_key_input" placeholder="sk-...">
+            </div>
+            
+            <button onclick="saveApiKey()">Save API Key</button>
+            <button class="btn-secondary" onclick="closeApiKeyModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let eventSource = null;
+        let isGenerating = false;
+
+        // Show API key modal if not configured
+        {% if not api_key_configured %}
+        window.addEventListener('load', () => {
+            showApiKeyModal();
+        });
+        {% endif %}
+
+        function showApiKeyModal() {
+            document.getElementById('apiKeyModal').classList.add('active');
+        }
+
+        function closeApiKeyModal() {
+            document.getElementById('apiKeyModal').classList.remove('active');
+        }
+
+        async function saveApiKey() {
+            const apiKey = document.getElementById('api_key_input').value.trim();
+            
+            if (!apiKey) {
+                alert('Please enter an API key!');
+                return;
+            }
+
+            if (!apiKey.startsWith('sk-')) {
+                alert('Invalid API key format! Key should start with "sk-"');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/save_api_key', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({api_key: apiKey})
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ API key saved successfully! Reloading...');
+                    window.location.reload();
+                } else {
+                    alert('❌ Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('❌ Error saving API key: ' + error.message);
+            }
+        }
+
+        document.getElementById('generationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (isGenerating) {
+                alert('Generation already in progress!');
+                return;
+            }
+
+            const formData = {
+                input_pdf: document.getElementById('input_pdf').value,
+                firstaid_pdf: document.getElementById('firstaid_pdf').value,
+                input_nature: document.getElementById('input_nature').value,
+                num_questions: document.getElementById('num_questions').value
+            };
+
+            // Validate
+            if (!formData.input_pdf || !formData.firstaid_pdf) {
+                alert('Please select both PDF files!');
+                return;
+            }
+
+            // Start generation
+            try {
+                const response = await fetch('/api/start_generation', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    startProgressMonitoring();
+                } else {
+                    alert('❌ Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('❌ Error starting generation: ' + error.message);
+            }
+        });
+
+        function startProgressMonitoring() {
+            isGenerating = true;
+            
+            // Show progress section
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('progressLog').innerHTML = '<div>🚀 Initializing...</div>';
+            document.getElementById('downloadBtn').classList.remove('active');
+            
+            // Disable button
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner">⏳</span> Generating...';
+            
+            // Connect to Server-Sent Events
+            if (eventSource) {
+                eventSource.close();
+            }
+            
+            eventSource = new EventSource('/api/progress');
+            
+            eventSource.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                
+                if (data.heartbeat) {
+                    return; // Ignore heartbeats
+                }
+                
+                if (data.message) {
+                    appendLog(data.message);
+                }
+                
+                // Update progress
+                updateProgress();
+            };
+            
+            eventSource.onerror = () => {
+                console.log('EventSource connection closed');
+                eventSource.close();
+                checkCompletion();
+            };
+            
+            // Poll for status updates
+            const statusInterval = setInterval(async () => {
+                const response = await fetch('/api/status');
+                const status = await response.json();
+                
+                if (status.total_questions > 0) {
+                    const percent = Math.round((status.current_question / status.total_questions) * 100);
+                    document.getElementById('progressFill').style.width = percent + '%';
+                    document.getElementById('progressText').textContent = percent + '%';
+                }
+                
+                if (!status.is_running) {
+                    clearInterval(statusInterval);
+                    checkCompletion();
+                }
+            }, 1000);
+        }
+
+        function appendLog(message) {
+            const log = document.getElementById('progressLog');
+            const div = document.createElement('div');
+            div.textContent = message;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        async function updateProgress() {
+            const response = await fetch('/api/status');
+            const status = await response.json();
+            
+            if (status.total_questions > 0) {
+                const percent = Math.round((status.current_question / status.total_questions) * 100);
+                document.getElementById('progressFill').style.width = percent + '%';
+                document.getElementById('progressText').textContent = percent + '%';
+            }
+        }
+
+        async function checkCompletion() {
+            const response = await fetch('/api/status');
+            const status = await response.json();
+            
+            isGenerating = false;
+            
+            // Re-enable button
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = false;
+            btn.innerHTML = '<span class="emoji">🚀</span> Generate Study Prompts';
+            
+            if (status.error) {
+                alert('❌ Error: ' + status.error);
+            } else if (status.output_file) {
+                document.getElementById('downloadBtn').classList.add('active');
+                appendLog('');
+                appendLog('✅ Generation complete! Click the download button above.');
+            }
+        }
+
+        function downloadCSV() {
+            window.location.href = '/api/download';
+        }
+
+        // Refresh PDF list
+        async function refreshPDFs() {
+            const response = await fetch('/api/list_pdfs');
+            const data = await response.json();
+            
+            // Update selects
+            if (data.firstaid_pdf) {
+                document.getElementById('firstaid_pdf').innerHTML = 
+                    `<option value="${data.firstaid_pdf}">${data.firstaid_pdf}</option>`;
+            }
+            
+            if (data.input_pdfs.length > 0) {
+                const select = document.getElementById('input_pdf');
+                select.innerHTML = data.input_pdfs.map(pdf => 
+                    `<option value="${pdf}">${pdf}</option>`
+                ).join('');
+            }
+        }
+    </script>
+</body>
+</html>
