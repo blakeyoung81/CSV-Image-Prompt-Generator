@@ -8,12 +8,14 @@
 
 | File | Purpose | Time to Read |
 |------|---------|--------------|
-| **START_HERE.md** | Begin here! Quick setup guide | 2 min |
-| **QUICKSTART.md** | Fastest path to running | 3 min |
+| **gui_app.py** | 🎨 **GUI Application - START HERE!** | Just run it! |
+| **GUI_GUIDE.md** | Complete GUI user guide | 5 min |
+| **START_HERE.md** | Command line quick setup guide | 2 min |
+| **QUICKSTART.md** | Fastest CLI path to running | 3 min |
 | **test_setup.py** | Validate your configuration | Run it! |
 | **test_api.py** | Test OpenAI API connection | Run it! |
 
-**New user?** Start with `START_HERE.md` → Run `test_setup.py` → Run `test_api.py` → You're ready!
+**New user?** Run `python3 gui_app.py` → GUI guides you through everything! 🎉
 
 ---
 
@@ -21,6 +23,7 @@
 
 | File | Purpose | When to Read |
 |------|---------|--------------|
+| **GUI_GUIDE.md** | Complete GUI user manual | Using the GUI |
 | **README.md** | Complete documentation | Need full details |
 | **USAGE_EXAMPLES.md** | Examples & troubleshooting | Running into issues |
 | **WORKFLOW.md** | Visual process flow | Want to understand flow |
@@ -33,7 +36,9 @@
 
 | File | Purpose | Usage |
 |------|---------|-------|
-| **run.py** | Interactive mode (easiest!) | `python3 run.py` |
+| **gui_app.py** | 🎨 **GUI Application (BEST!)** | `python3 gui_app.py` |
+| **launch_gui.sh** | GUI launcher script | `./launch_gui.sh` |
+| **run.py** | Interactive CLI mode | `python3 run.py` |
 | **generate_study_prompts.py** | Main engine | `python3 generate_study_prompts.py "exam.pdf"` |
 | **test_setup.py** | Validate setup | `python3 test_setup.py` |
 | **test_api.py** | Test API connection | `python3 test_api.py` |

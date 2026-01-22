@@ -39,7 +39,29 @@ Place your `firstaid.pdf` file in this directory. This will be used as the knowl
 
 ## Usage
 
-### Basic Usage
+### 🎨 GUI Mode (Easiest - Recommended!)
+
+Launch the user-friendly graphical interface:
+
+```bash
+# Option 1: Double-click or run the launcher
+./launch_gui.sh
+
+# Option 2: Run directly with Python
+python3 gui_app.py
+```
+
+**GUI Features:**
+- 🔑 **Easy API Key Setup** - Popup dialog if no key is configured
+- 📝 **Customizable Input Description** - Default: "An NBME exam of 50 questions..."
+- 🔢 **Flexible Question Count** - Default: 50 (or set to 'auto' to detect)
+- 📁 **File Browser** - Easy PDF selection with auto-detection
+- 📊 **Live Progress** - Real-time status updates and progress bar
+- ✨ **Auto-Detection** - Automatically finds PDFs in current directory
+
+### 💻 Command Line Mode
+
+#### Basic Usage
 
 ```bash
 python generate_study_prompts.py "NBME 30 A Part 2-ocr.pdf"
@@ -51,10 +73,16 @@ This will:
 3. Generate enriched study prompts using AI + First Aid
 4. Save to `NBME 30 A Part 2-ocr_study_prompts.csv`
 
-### Specify Output File
+#### Specify Output File
 
 ```bash
 python generate_study_prompts.py "NBME 30 A Part 2-ocr.pdf" my_output.csv
+```
+
+#### Interactive Mode
+
+```bash
+python3 run.py
 ```
 
 ## Output Format

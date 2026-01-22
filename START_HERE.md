@@ -4,7 +4,27 @@ Welcome! This tool generates enriched study prompts from medical exam PDFs using
 
 ---
 
-## ⚡ 60-Second Quick Start
+## ⚡ 30-Second Quick Start (GUI Mode)
+
+```bash
+# 1. Install dependencies
+pip3 install -r requirements.txt
+
+# 2. Launch the GUI
+python3 gui_app.py
+```
+
+The GUI will guide you through:
+- ✅ Setting up your API key (popup if not configured)
+- ✅ Selecting your PDF files
+- ✅ Customizing the generation settings
+- ✅ Generating your study prompts
+
+**That's it!** 🎉
+
+---
+
+## 📋 Traditional Command Line Start
 
 ```bash
 # 1. Install
@@ -25,8 +45,6 @@ python3 test_api.py
 # 6. Run!
 python3 run.py
 ```
-
-**That's it!** 🎉
 
 ---
 
