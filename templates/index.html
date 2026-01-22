@@ -191,10 +191,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
         }
 
         .modal.active {
@@ -203,15 +207,326 @@
 
         .modal-content {
             background: white;
-            padding: 40px;
-            border-radius: 15px;
+            border-radius: 20px;
             max-width: 500px;
-            width: 90%;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            animation: slideUp 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.1);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: #666;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: rgba(0,0,0,0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            text-align: center;
+            padding: 40px 30px 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            animation: bounce 0.6s ease;
         }
 
         .modal-content h2 {
+            color: #1f2937;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .modal-subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .modal-subtitle a {
             color: #667eea;
-            margin-bottom: 20px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .modal-subtitle a:hover {
+            text-decoration: underline;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 5px;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .toggle-password:hover {
+            opacity: 1;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .input-hint::before {
+            content: "🔒";
+            font-size: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-large {
+            padding: 18px 30px;
+            font-size: 18px;
+        }
+
+        /* Exit Intent Modal Specific Styles */
+        .exit-modal {
+            max-width: 600px;
+        }
+
+        .exit-modal-header {
+            text-align: center;
+            padding: 40px 30px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .exit-icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+            animation: bounce 0.6s ease;
+        }
+
+        .exit-modal-header h2 {
+            color: white;
+            margin-bottom: 8px;
+            font-size: 32px;
+        }
+
+        .exit-subtitle {
+            color: rgba(255,255,255,0.95);
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .exit-modal-body {
+            padding: 35px;
+        }
+
+        .exit-description {
+            text-align: center;
+            color: #4b5563;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .exit-benefits {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: #374151;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .benefit-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .benefit-icon {
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .exit-form {
+            margin-top: 25px;
+        }
+
+        .exit-disclaimer {
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .modal {
+                padding: 10px;
+            }
+
+            .modal-content {
+                border-radius: 15px;
+                max-height: 95vh;
+            }
+
+            .modal-header {
+                padding: 30px 20px 15px;
+            }
+
+            .modal-icon, .exit-icon {
+                font-size: 50px;
+            }
+
+            .modal-content h2 {
+                font-size: 24px;
+            }
+
+            .exit-modal-header h2 {
+                font-size: 26px;
+            }
+
+            .exit-subtitle {
+                font-size: 16px;
+            }
+
+            .modal-body, .exit-modal-body {
+                padding: 20px;
+            }
+
+            .exit-benefits {
+                padding: 20px;
+            }
+
+            .benefit-item {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content h2 {
+                font-size: 20px;
+            }
+
+            .exit-modal-header h2 {
+                font-size: 22px;
+            }
+
+            .exit-subtitle {
+                font-size: 15px;
+            }
+
+            .modal-icon, .exit-icon {
+                font-size: 40px;
+            }
+
+            .btn-primary {
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+
+            .btn-large {
+                padding: 16px 24px;
+                font-size: 16px;
+            }
         }
 
         .btn-secondary {
@@ -345,27 +660,102 @@
     <!-- API Key Modal -->
     <div class="modal" id="apiKeyModal">
         <div class="modal-content">
-            <h2>🔑 Enter OpenAI API Key</h2>
-            <p style="color: #666; margin-bottom: 20px;">
-                Get your API key from: 
-                <a href="https://platform.openai.com/api-keys" target="_blank" style="color: #667eea;">
-                    platform.openai.com/api-keys
-                </a>
-            </p>
+            <button class="modal-close" onclick="closeApiKeyModal()" aria-label="Close">&times;</button>
             
-            <div class="form-group">
-                <label for="api_key_input">API Key</label>
-                <input type="password" id="api_key_input" placeholder="sk-...">
+            <div class="modal-header">
+                <div class="modal-icon">🔑</div>
+                <h2>Enter Your OpenAI API Key</h2>
+                <p class="modal-subtitle">
+                    Get your API key from 
+                    <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">
+                        platform.openai.com/api-keys
+                    </a>
+                </p>
             </div>
             
-            <button onclick="saveApiKey()">Save API Key</button>
-            <button class="btn-secondary" onclick="closeApiKeyModal()">Cancel</button>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="api_key_input">API Key</label>
+                    <div class="input-with-icon">
+                        <input type="password" id="api_key_input" placeholder="sk-proj-..." autocomplete="off">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
+                            <span id="eyeIcon">👁️</span>
+                        </button>
+                    </div>
+                    <p class="input-hint">Your API key is stored locally and never shared</p>
+                </div>
+                
+                <div class="modal-actions">
+                    <button onclick="saveApiKey()" class="btn-primary">
+                        <span>Save and Continue</span>
+                    </button>
+                    <button class="btn-secondary" onclick="closeApiKeyModal()">
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exit Intent Modal - "Before You Go" -->
+    <div class="modal" id="exitIntentModal">
+        <div class="modal-content exit-modal">
+            <button class="modal-close" onclick="closeExitModal()" aria-label="Close">&times;</button>
+            
+            <div class="exit-modal-header">
+                <div class="exit-icon">📚</div>
+                <h2>Wait! Before You Go...</h2>
+                <p class="exit-subtitle">Get a Free 15-Minute Score Strategy Call</p>
+            </div>
+            
+            <div class="exit-modal-body">
+                <p class="exit-description">
+                    Discover how to raise your test score faster with personalized guidance from top-tier tutors.
+                </p>
+                
+                <div class="exit-benefits">
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✅</span>
+                        <span>Custom study plan tailored to your needs</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✅</span>
+                        <span>Identify weak areas and create a focused strategy</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✅</span>
+                        <span>Proven methods for significant score improvements</span>
+                    </div>
+                </div>
+                
+                <form class="exit-form" onsubmit="handleExitFormSubmit(event)">
+                    <div class="form-group">
+                        <label for="exit_name">Full Name</label>
+                        <input type="text" id="exit_name" placeholder="Your name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exit_email">Email Address</label>
+                        <input type="email" id="exit_email" placeholder="your@email.com" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary btn-large">
+                        <span>Get My Free Strategy Call</span>
+                    </button>
+                    
+                    <p class="exit-disclaimer">
+                        No credit card required. We'll email you to schedule.
+                    </p>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
         let eventSource = null;
         let isGenerating = false;
+        let exitIntentShown = false;
+        let mouseLeftWindow = false;
 
         // Show API key modal if not configured
         {% if not api_key_configured %}
@@ -374,6 +764,40 @@
         });
         {% endif %}
 
+        // Exit intent detection
+        document.addEventListener('mouseleave', (e) => {
+            if (e.clientY <= 0 && !exitIntentShown && !isGenerating) {
+                mouseLeftWindow = true;
+                setTimeout(() => {
+                    if (mouseLeftWindow && !exitIntentShown) {
+                        showExitIntentModal();
+                    }
+                }, 500);
+            }
+        });
+
+        document.addEventListener('mouseenter', () => {
+            mouseLeftWindow = false;
+        });
+
+        // Mobile: show on scroll up
+        let lastScrollTop = 0;
+        let scrollUpCount = 0;
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768 && !exitIntentShown && !isGenerating) {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop < lastScrollTop) {
+                    scrollUpCount++;
+                    if (scrollUpCount > 5) {
+                        showExitIntentModal();
+                    }
+                } else {
+                    scrollUpCount = 0;
+                }
+                lastScrollTop = scrollTop;
+            }
+        });
+
         function showApiKeyModal() {
             document.getElementById('apiKeyModal').classList.add('active');
         }
@@ -381,6 +805,55 @@
         function closeApiKeyModal() {
             document.getElementById('apiKeyModal').classList.remove('active');
         }
+
+        function togglePasswordVisibility() {
+            const input = document.getElementById('api_key_input');
+            const icon = document.getElementById('eyeIcon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                icon.textContent = '👁️';
+            }
+        }
+
+        function showExitIntentModal() {
+            if (!exitIntentShown) {
+                exitIntentShown = true;
+                document.getElementById('exitIntentModal').classList.add('active');
+                
+                // Store that we've shown it
+                localStorage.setItem('exitIntentShown', 'true');
+            }
+        }
+
+        function closeExitModal() {
+            document.getElementById('exitIntentModal').classList.remove('active');
+        }
+
+        function handleExitFormSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('exit_name').value;
+            const email = document.getElementById('exit_email').value;
+            
+            // Here you would normally send this to your backend/email service
+            console.log('Form submitted:', { name, email });
+            
+            // Show success message
+            alert('Thank you! We\'ll email you shortly to schedule your free strategy call.');
+            
+            closeExitModal();
+        }
+
+        // Check if we've already shown the exit intent
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('exitIntentShown') === 'true') {
+                exitIntentShown = true;
+            }
+        });
 
         async function saveApiKey() {
             const apiKey = document.getElementById('api_key_input').value.trim();
